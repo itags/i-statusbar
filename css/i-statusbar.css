@@ -1,0 +1,57 @@
+/* ======================================================================= */
+/* ======================================================================= */
+/* ======================================================================= */
+/* Definition of itag shadow-css is done by defining a `dummy` css-rule    */
+/* for the dummy-element: `itag-css` --> its property (also dummy) `i-tag` /*
+/* will define which itag will be css-shadowed                             /*
+/* ======================================================================= */
+itag-css {
+    i-tag: i-statusbar;  /* set the property-value to the proper itag */
+}
+/* ======================================================================= */
+/* ======================================================================= */
+/* ======================================================================= */
+
+
+/* ================================= */
+/* set invisiblity when not rendered */
+/* ================================= */
+i-statusbar:not(.itag-rendered) {
+    /* don't set visibility to hidden --> you cannot set a focus on those items */
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    z-index: -1;
+}
+
+i-statusbar:not(.itag-rendered) * {
+    opacity: 0 !important;
+}
+/* ================================= */
+
+i-statusbar {
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: static;
+    left: 0;
+    bottom: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+i-statusbar >span {
+    white-space: nowrap;
+}
+
+i-statusbar >span:first-item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+i-statusbar >span:last-item {
+    text-align: right;
+}
