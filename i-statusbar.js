@@ -2,6 +2,7 @@ module.exports = function (window) {
     "use strict";
 
     require('itags.core')(window);
+    require('./css/i-statusbar.css');
 
     var itagName = 'i-statusbar', // <-- define your own itag-name here
         DOCUMENT = window.document,
@@ -41,18 +42,19 @@ module.exports = function (window) {
                 element.setData('errors', []);
                 element.defineWhenUndefined('readyContent', DEFAULT_READY);
                 element.defineWhenUndefined('content', element.model.readyContent || '');
-                element.setupListeners();
             },
 
             setupListener: function() {
                 var element = this,
                     events = element.model.events.split(',');
                 if (events.length>0) {
+console.warn('setup before listener: '+JSON.stringify(events));
                     element.setData('_listener', ITSA.Event.before(events, element.processMessage.bind(element)));
                 }
             },
 
             detachListener: function() {
+console.warn('detach listener');
                 var element = this,
                     listener = this.getData('_listener');
                 listener && listener.detach();
@@ -81,7 +83,7 @@ module.exports = function (window) {
                 if (footer) {
                     lastSpan.setHTML(model.footer);
                 }
-                lastSpan.toggleClass('itsa-hidden', !!footer);
+                lastSpan.toggleClass('itsa-hidden', !footer);
             },
 
             processMessage: function(e) {
