@@ -76,7 +76,7 @@ i-statusbar >span button.pure-button,
 i-statusbar >span button {
     margin: 0;
     background-color: #FFF;
-    padding: 0.3em 0.6em 0.1em;
+    padding: 0.5em 0.6em 0.1em;
     color: #222;
     font-size: 0.8em;
     box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset;

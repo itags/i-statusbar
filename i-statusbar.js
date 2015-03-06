@@ -42,19 +42,23 @@ module.exports = function (window) {
                 element.setData('errors', []);
                 element.defineWhenUndefined('readyContent', DEFAULT_READY);
                 element.defineWhenUndefined('content', element.model.readyContent || '');
+
+
+                element.after('tap', element.finishMessage.bind(element)); // works
+                // element.after('tap', element.finishMessage.bind(element), 'button'); // doesn't work
+
+
             },
 
             setupListener: function() {
                 var element = this,
                     events = element.model.events.split(',');
                 if (events.length>0) {
-console.warn('setup before listener: '+JSON.stringify(events));
-                    element.setData('_listener', ITSA.Event.before(events, element.processMessage.bind(element)));
+                    element.setData('_listener', element.before(events, element.processMessage.bind(element)));
                 }
             },
 
             detachListener: function() {
-console.warn('detach listener');
                 var element = this,
                     listener = this.getData('_listener');
                 listener && listener.detach();
@@ -84,6 +88,17 @@ console.warn('detach listener');
                     lastSpan.setHTML(model.footer);
                 }
                 lastSpan.toggleClass('itsa-hidden', !footer);
+            },
+
+            finishMessage: function(e) {
+                // fulfill with a containerNode --> the same as `dialog` does:
+                var element = this,
+                    buttonNode = e.target,
+                    model = element.model,
+                    containerNode = DOCUMENT.createElement('div');
+                containerNode.setHTML(model.content);
+                containerNode.append(buttonNode.getOuterHTML());
+                model.messagePromise.fulfill(containerNode);
             },
 
             processMessage: function(e) {
