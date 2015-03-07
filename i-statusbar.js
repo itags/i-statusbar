@@ -42,12 +42,7 @@ module.exports = function (window) {
                 element.setData('errors', []);
                 element.defineWhenUndefined('readyContent', DEFAULT_READY);
                 element.defineWhenUndefined('content', element.model.readyContent || '');
-
-
-                element.after('tap', element.finishMessage.bind(element)); // works
-                // element.after('tap', element.finishMessage.bind(element), 'button'); // doesn't work
-
-
+                element.selfAfter('tap', element.finishMessage.bind(element), '>span:last-child button');
             },
 
             setupListener: function() {
@@ -95,8 +90,8 @@ module.exports = function (window) {
                 var element = this,
                     buttonNode = e.target,
                     model = element.model,
-                    containerNode = DOCUMENT.createElement('div');
-                containerNode.setHTML(model.content);
+                    messageSpan = element.getElement('>span'),
+                    containerNode = messageSpan.cloneNode(true);
                 containerNode.append(buttonNode.getOuterHTML());
                 model.messagePromise.fulfill(containerNode);
             },
