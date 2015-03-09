@@ -94,6 +94,8 @@ module.exports = function (window) {
                     containerNode = messageSpan.cloneNode(true);
                 containerNode.append(buttonNode.getOuterHTML());
                 model.messagePromise.fulfill(containerNode);
+                // we can safely remove the newly created container-node: the vdom holds it for 1 minute
+                containerNode.remove();
             },
 
             processMessage: function(e) {
