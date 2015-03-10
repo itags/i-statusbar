@@ -10,13 +10,15 @@ module.exports = function (window) {
         DEFAULT_READY = 'ready',
         MESSAGE_LEVELS = {
             'message': 1,
-            'warning': 2,
-            'error': 3
+            'warn': 2,
+            'error': 3,
+            'statusmessage': 1 // revert to level 1!
         },
         MESSAGE_HASHES = {
             'message': 'messages',
-            'warning': 'warnings',
-            'error': 'errors'
+            'warn': 'warnings',
+            'error': 'errors',
+            'statusmessage': 'messages'
         },
         MESSAGE_HASHES_NR = {
             1: 'messages',
@@ -49,6 +51,9 @@ module.exports = function (window) {
                 var element = this,
                     events = element.model.events.split(',');
                 if (events.length>0) {
+                    events.forEach(function(item, index) {
+                        events[index] = item.trim();
+                    });
                     element.setData('_listener', element.before(events, element.processMessage.bind(element)));
                 }
             },
@@ -79,8 +84,14 @@ module.exports = function (window) {
                     element.setData('_prevEvents', events);
                 }
                 firstSpan.setHTML(model.content);
-                if (footer) {
-                    lastSpan.setHTML(model.footer);
+                if (footer && (footer.contains('</button>') || footer.contains('</i-button>'))) {
+                    lastSpan.setHTML(footer);
+                }
+                else {
+                    // no button to close? then we might need to set one: in case the message doesn't disappear by itself:
+                    if (!model.timeout) {
+                        lastSpan.setHTML('<button class="pure-button">x</button>');
+                    }
                 }
                 lastSpan.toggleClass('itsa-hidden', !footer);
             },
