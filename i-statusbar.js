@@ -38,7 +38,7 @@ module.exports = function (window) {
 
             init: function() {
                 var element = this;
-                element.setData('currentMessageLevel', 0);
+                element.setData('_currentMessageLevel', 0);
                 element.setData('messages', []);
                 element.setData('warnings', []);
                 element.setData('errors', []);
@@ -54,7 +54,7 @@ module.exports = function (window) {
                     events.forEach(function(item, index) {
                         events[index] = item.trim();
                     });
-                    element.setData('_listener', element.before(events, element.processMessage.bind(element)));
+                    element.setData('_listener', element.before(events, element.queueMessage.bind(element)));
                 }
             },
 
@@ -109,7 +109,7 @@ module.exports = function (window) {
                 containerNode.remove();
             },
 
-            processMessage: function(e) {
+            queueMessage: function(e) {
                 var element = this,
                     messagePromise = e.messagePromise,
                     type = e.type,
@@ -125,11 +125,11 @@ module.exports = function (window) {
                         element.handleMessage(true);
                     }
                 );
-                (level>element.getData('currentMessageLevel')) && element.handleMessage(!element.isWaiting(), level);
+                (level>element.getData('_currentMessageLevel')) && element.handleMessage(!element.isWaiting(), level);
             },
 
             isWaiting: function() {
-                return (this.getData('currentMessageLevel')===0);
+                return (this.getData('_currentMessageLevel')===0);
             },
 
             handleMessage: function(delay, level) {
@@ -151,12 +151,12 @@ module.exports = function (window) {
                 if (!level || (element.getData([MESSAGE_HASHES_NR[level]]).length===0)) {
                     // DO NOT make messagePromise null: it sould be there as return value
                     // of the last message
-                    element.setData('currentMessageLevel', 0);
+                    element.setData('_currentMessageLevel', 0);
                     model.content = model.readyContent;
                     model.footer = null;
                     return;
                 }
-                element.setData('currentMessageLevel', level);
+                element.setData('_currentMessageLevel', level);
                 // now process the highest message
                 messagePromise = element.getData([MESSAGE_HASHES_NR[level]])[0];
                 if (delay) {
