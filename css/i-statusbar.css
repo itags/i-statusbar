@@ -1,0 +1,118 @@
+/* ======================================================================= */
+/* ======================================================================= */
+/* ======================================================================= */
+/* Definition of itag shadow-css is done by defining a `dummy` css-rule    */
+/* for the dummy-element: `itag-css` --> its property (also dummy) `i-tag` */
+/* will define which itag will be css-shadowed                             */
+/* ======================================================================= */
+itag-css {
+    i-tag: i-statusbar;  /* set the property-value to the proper itag */
+}
+/* ======================================================================= */
+/* ======================================================================= */
+/* ======================================================================= */
+
+
+/* ================================= */
+/* set invisiblity when not rendered */
+/* ================================= */
+i-statusbar:not(.itag-rendered) {
+    /* don't set visibility to hidden --> you cannot set a focus on those items */
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    z-index: -1;
+}
+
+i-statusbar:not(.itag-rendered) * {
+    opacity: 0 !important;
+}
+/* ================================= */
+
+i-statusbar {
+    z-index: 999;
+    color: #222;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 1.5em;
+    vertical-align: middle;
+    padding: 2px 0.5em 0;
+    border-top: solid 1px #BBB;
+    background: rgb(238,238,238);
+    background: -moz-linear-gradient(top,  rgba(238,238,238,1) 0%, rgba(238,238,238,1) 11%, rgba(221,221,221,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(11%,rgba(238,238,238,1)), color-stop(100%,rgba(221,221,221,1)));
+    background: -webkit-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(238,238,238,1) 11%,rgba(221,221,221,1) 100%);
+    background: -o-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(238,238,238,1) 11%,rgba(221,221,221,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(238,238,238,1) 11%,rgba(221,221,221,1) 100%);
+    background: linear-gradient(to bottom,  rgba(238,238,238,1) 0%,rgba(238,238,238,1) 11%,rgba(221,221,221,1) 100%);
+}
+
+/* make sure i-splitdiv with full-page sees the i-statusbar inline, otherwise it would think the specific section is empty,
+   which would lead into worng calculation of the height of the variable section */
+i-splitdiv[full-page="true"] >section >section >section >i-statusbar {
+    position: relative;
+}
+
+i-statusbar >span {
+    white-space: nowrap;
+}
+
+i-statusbar >span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+i-statusbar >span:last-child {
+    text-align: right;
+    float: right;
+}
+
+i-statusbar >span i-button,
+i-statusbar >span button.pure-button,
+i-statusbar >span button {
+    margin: 0;
+    background-color: #FFF;
+    padding: 0.4em 0.6em 0.25em;
+    color: #222;
+    font-size: 0.8em;
+    box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset;
+}
+
+i-statusbar >span i-button.i-primary,
+i-statusbar >span button.pure-button-primary {
+    background-color: #FFF;
+    color: #222;
+}
+
+i-statusbar >span div.dialog-message-icon,
+i-statusbar >span div.dialog-message {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    display: inline-block;
+}
+
+i-statusbar >span div.dialog-message-icon {
+    margin-left: -1em;
+    padding-left: 1em;
+    width: 1em;
+}
+
+i-statusbar >span div.dialog-message {
+    margin-left: 1.4em;
+    padding-top: 0.05em;
+}
